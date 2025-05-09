@@ -170,8 +170,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="?url=produk" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                    <a href="?url=pro" class="nav-link">
+                        <i class="nav-icon fas fa-store"></i>
                         <p>
                             Produk
                         </p>
@@ -179,7 +179,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="?url=testimoni" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-quote-left"></i>
                         <p>
                             Testimoni
                         </p>

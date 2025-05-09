@@ -1,11 +1,8 @@
 <?php
-require_once('Controllers/Testimoni.php');
 require_once('Controllers/Produk.php');
-require_once('Controllers/KategoriTokoh.php');
-
-$testimoni = new Testimoni($pdo);
-$produk = new Produk($pdo);
-$kategori = new KategoriTokoh($pdo);
+$produk = new Produk($pdo); // Pastikan $pdo sudah diinisialisasi di Config/DB.php
+require_once('Controllers/JenisProduk.php');
+$jenis = new Jenis($pdo); // Untuk dropdown jenis produk
 ?>
 <section class="content">
     <div class="container-fluid">
@@ -13,17 +10,17 @@ $kategori = new KategoriTokoh($pdo);
             <div class="card w-100">
                 <div class="card-body">
                     
-                    <!-- Tombol Tambah Testimoni -->
+                    <!-- Tombol Tambah Produk -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Tambah Testimoni
+                        Tambah Produk
                     </button>
 
-                    <!-- Modal Tambah Testimoni -->
+                    <!-- Modal Tambah Produk -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Tambah Testimoni</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Tambah Produk</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -31,16 +28,20 @@ $kategori = new KategoriTokoh($pdo);
                                 <form method="post">
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label for="tanggal">Tanggal</label>
-                                            <input type="date" class="form-control" name="tanggal" required>
+                                            <label for="kode">Kode</label>
+                                            <input type="text" class="form-control" name="kode" placeholder="Kode Produk" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="nama_tokoh">Nama Tokoh</label>
-                                            <input type="text" class="form-control" name="nama_tokoh" placeholder="Nama Tokoh" required>
+                                            <label for="nama">Nama</label>
+                                            <input type="text" class="form-control" name="nama" placeholder="Nama Produk" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="komentar">Komentar</label>
-                                            <textarea class="form-control" name="komentar" placeholder="Komentar" required></textarea>
+                                            <label for="harga">Harga</label>
+                                            <input type="number" class="form-control" name="harga" placeholder="Harga Produk" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="stok">Stok</label>
+                                            <input type="number" class="form-control" name="stok" placeholder="Stok Produk" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="rating">Rating</label>
@@ -53,25 +54,21 @@ $kategori = new KategoriTokoh($pdo);
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="produk_id">Produk</label>
-                                            <select class="form-control" name="produk_id" required>
-                                                <option value="">Pilih Produk</option>
-                                                <?php
-                                                $produks = $produk->index();
-                                                foreach ($produks as $produkItem) {
-                                                    echo "<option value='" . $produkItem['id'] . "'>" . $produkItem['nama'] . "</option>";
-                                                }
-                                                ?>
-                                            </select>
+                                            <label for="min_stok">Min Stok</label>
+                                            <input type="number" class="form-control" name="min_stok" placeholder="Minimal Stok" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="kategori_tokoh_id">Kategori Tokoh</label>
-                                            <select class="form-control" name="kategori_tokoh_id" required>
-                                                <option value="">Pilih Kategori Tokoh</option>
+                                            <label for="deskripsi">Deskripsi</label>
+                                            <textarea class="form-control" name="deskripsi" placeholder="Deskripsi Produk" required></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="jenis_produk_id">Jenis Produk</label>
+                                            <select class="form-control" name="jenis_produk_id" required>
+                                                <option value="">Pilih Jenis Produk</option>
                                                 <?php
-                                                $kategoriTokoh = $kategori->index();
-                                                foreach ($kategoriTokoh as $kategoriItem) {
-                                                    echo "<option value='" . $kategoriItem['id'] . "'>" . $kategoriItem['kategori_tokoh_id'] . "</option>";
+                                                $jenisProduks = $jenis->index();
+                                                foreach ($jenisProduks as $jenisItem) {
+                                                    echo "<option value='" . $jenisItem['id'] . "'>" . $jenisItem['nama'] . "</option>";
                                                 }
                                                 ?>
                                             </select>
@@ -86,34 +83,38 @@ $kategori = new KategoriTokoh($pdo);
                         </div>
                     </div>
 
-                    <!-- Tabel Testimoni -->
+                    <!-- Tabel Produk -->
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Tanggal</th>
-                                <th>Nama Tokoh</th>
-                                <th>Komentar</th>
+                                <th>Kode</th>
+                                <th>Nama</th>
+                                <th>Harga</th>
+                                <th>Stok</th>
                                 <th>Rating</th>
-                                <th>Produk</th>
-                                <th>Kategori Tokoh</th>
+                                <th>Min Stok</th>
+                                <th>Deskripsi</th>
+                                <th>Jenis Produk</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             $nomor = 1;
-                            $rows = $testimoni->index();
+                            $rows = $produk->index();
                             foreach ($rows as $row) {
                                 echo "
                                 <tr>
                                     <td>" . $nomor++ . "</td>
-                                    <td>" . $row['tanggal'] . "</td>
-                                    <td>" . $row['nama_tokoh'] . "</td>
-                                    <td>" . $row['komentar'] . "</td>
+                                    <td>" . $row['kode'] . "</td>
+                                    <td>" . $row['nama'] . "</td>
+                                    <td>" . $row['harga'] . "</td>
+                                    <td>" . $row['stok'] . "</td>
                                     <td>" . $row['rating'] . "</td>
-                                    <td>" . $row['produk_id'] . "</td>
-                                    <td>" . $row['kategori_tokoh_id'] . "</td>
+                                    <td>" . $row['min_stok'] . "</td>
+                                    <td>" . $row['deskripsi'] . "</td>
+                                    <td>" . $row['jenis_produk'] . "</td>
                                     <td>
                                         <button type='button' class='btn btn-warning btn-sm' data-toggle='modal' data-target='#editModal" . $row['id'] . "'>
                                             Edit
@@ -131,13 +132,13 @@ $kategori = new KategoriTokoh($pdo);
                         </tbody>
                     </table>
 
-                    <!-- Modal Edit Testimoni -->
+                    <!-- Modal Edit Produk -->
                     <?php foreach ($rows as $row): ?>
                     <div class="modal fade" id="editModal<?= $row['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?= $row['id'] ?>" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="editModalLabel<?= $row['id'] ?>">Edit Testimoni</h5>
+                                    <h5 class="modal-title" id="editModalLabel<?= $row['id'] ?>">Edit Produk</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -146,16 +147,20 @@ $kategori = new KategoriTokoh($pdo);
                                     <div class="modal-body">
                                         <input type="hidden" name="id" value="<?= $row['id'] ?>">
                                         <div class="form-group">
-                                            <label for="tanggal">Tanggal</label>
-                                            <input type="date" class="form-control" name="tanggal" value="<?= $row['tanggal'] ?>" required>
+                                            <label for="kode">Kode</label>
+                                            <input type="text" class="form-control" name="kode" value="<?= $row['kode'] ?>" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="nama_tokoh">Nama Tokoh</label>
-                                            <input type="text" class="form-control" name="nama_tokoh" value="<?= $row['nama_tokoh'] ?>" required>
+                                            <label for="nama">Nama</label>
+                                            <input type="text" class="form-control" name="nama" value="<?= $row['nama'] ?>" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="komentar">Komentar</label>
-                                            <textarea class="form-control" name="komentar" required><?= $row['komentar'] ?></textarea>
+                                            <label for="harga">Harga</label>
+                                            <input type="number" class="form-control" name="harga" value="<?= $row['harga'] ?>" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="stok">Stok</label>
+                                            <input type="number" class="form-control" name="stok" value="<?= $row['stok'] ?>" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="rating">Rating</label>
@@ -168,21 +173,19 @@ $kategori = new KategoriTokoh($pdo);
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="produk_id">Produk</label>
-                                            <select class="form-control" name="produk_id" required>
-                                                <?php foreach ($produks as $produkItem): ?>
-                                                    <option value="<?= $produkItem['id'] ?>" <?= $row['produk_id'] == $produkItem['id'] ? 'selected' : '' ?>>
-                                                        <?= $produkItem['nama'] ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            </select>
+                                            <label for="min_stok">Min Stok</label>
+                                            <input type="number" class="form-control" name="min_stok" value="<?= $row['min_stok'] ?>" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="kategori_tokoh_id">Kategori Tokoh</label>
-                                            <select class="form-control" name="kategori_tokoh_id" required>
-                                                <?php foreach ($kategoriTokoh as $kategoriItem): ?>
-                                                    <option value="<?= $kategoriItem['id'] ?>" <?= $row['kategori_tokoh_id'] == $kategoriItem['id'] ? 'selected' : '' ?>>
-                                                        <?= $kategoriItem['kategori_tokoh_id'] ?>
+                                            <label for="deskripsi">Deskripsi</label>
+                                            <textarea class="form-control" name="deskripsi" required><?= $row['deskripsi'] ?></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="jenis_produk_id">Jenis Produk</label>
+                                            <select class="form-control" name="jenis_produk_id" required>
+                                                <?php foreach ($jenisProduks as $jenisItem): ?>
+                                                    <option value="<?= $jenisItem['id'] ?>" <?= $row['jenis_produk_id'] == $jenisItem['id'] ? 'selected' : '' ?>>
+                                                        <?= $jenisItem['nama'] ?>
                                                     </option>
                                                 <?php endforeach; ?>
                                             </select>
@@ -199,41 +202,45 @@ $kategori = new KategoriTokoh($pdo);
                     <?php endforeach; ?>
 
                     <?php
-                    // Penanganan form tambah testimoni
+                    // Penanganan form tambah produk
                     if (isset($_POST['type']) && $_POST['type'] == 'tambah') {
                         $data = [
-                            'tanggal' => $_POST['tanggal'],
-                            'nama_tokoh' => $_POST['nama_tokoh'],
-                            'komentar' => $_POST['komentar'],
+                            'kode' => $_POST['kode'],
+                            'nama' => $_POST['nama'],
+                            'harga' => $_POST['harga'],
+                            'stok' => $_POST['stok'],
                             'rating' => $_POST['rating'],
-                            'produk_id' => $_POST['produk_id'],
-                            'kategori_tokoh_id' => $_POST['kategori_tokoh_id'],
+                            'min_stok' => $_POST['min_stok'],
+                            'deskripsi' => $_POST['deskripsi'],
+                            'jenis_produk_id' => $_POST['jenis_produk_id']
                         ];
-                        $testimoni->create($data);
-                        echo '<script>alert("Testimoni berhasil ditambahkan!");</script>';
-                        echo '<meta http-equiv="refresh" content="0; url=?url=testimoni">';
+                        $produk->create($data);
+                        echo '<script>alert("Produk berhasil ditambahkan!");</script>';
+                        echo '<meta http-equiv="refresh" content="0; url=?url=pro">';
                     }
 
-                    // Penanganan form edit testimoni
+                    // Penanganan form edit produk
                     if (isset($_POST['type']) && $_POST['type'] == 'edit') {
                         $data = [
-                            'tanggal' => $_POST['tanggal'],
-                            'nama_tokoh' => $_POST['nama_tokoh'],
-                            'komentar' => $_POST['komentar'],
+                            'kode' => $_POST['kode'],
+                            'nama' => $_POST['nama'],
+                            'harga' => $_POST['harga'],
+                            'stok' => $_POST['stok'],
                             'rating' => $_POST['rating'],
-                            'produk_id' => $_POST['produk_id'],
-                            'kategori_tokoh_id' => $_POST['kategori_tokoh_id'],
+                            'min_stok' => $_POST['min_stok'],
+                            'deskripsi' => $_POST['deskripsi'],
+                            'jenis_produk_id' => $_POST['jenis_produk_id']
                         ];
-                        $testimoni->update($_POST['id'], $data);
-                        echo '<script>alert("Testimoni berhasil diupdate!");</script>';
-                        echo '<meta http-equiv="refresh" content="0; url=?url=testimoni">';
+                        $produk->update($_POST['id'], $data);
+                        echo '<script>alert("Produk berhasil diupdate!");</script>';
+                        echo '<meta http-equiv="refresh" content="0; url=?url=pro">';
                     }
 
-                    // Penanganan form hapus testimoni
+                    // Penanganan form hapus produk
                     if (isset($_POST['type']) && $_POST['type'] == 'delete') {
-                        $testimoni->delete($_POST['id']);
-                        echo '<script>alert("Testimoni berhasil dihapus!");</script>';
-                        echo '<meta http-equiv="refresh" content="0; url=?url=testimoni">';
+                        $produk->delete($_POST['id']);
+                        echo '<script>alert("Produk berhasil dihapus!");</script>';
+                        echo '<meta http-equiv="refresh" content="0; url=?url=pro">';
                     }
                     ?>
                 </div>
