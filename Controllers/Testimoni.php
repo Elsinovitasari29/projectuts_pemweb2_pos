@@ -14,7 +14,8 @@ class Testimoni
     public function index()
     {
         $stmt = $this->pdo->query("
-            SELECT testimoni.*, produk.nama AS nama_produk, kategori_tokoh.nama AS nama_kategori 
+            SELECT testimoni.id, testimoni.tanggal, testimoni.nama_tokoh, testimoni.komentar, testimoni.rating, 
+            produk.nama AS nama_produk, kategori_tokoh.nama AS nama_kategori 
             FROM testimoni
             LEFT JOIN produk ON testimoni.produk_id = produk.id
             LEFT JOIN kategori_tokoh ON testimoni.kategori_tokoh_id = kategori_tokoh.id
@@ -23,6 +24,7 @@ class Testimoni
     }
 
     // Tambah data testimoni
+        
     public function create($data)
     {
         $stmt = $this->pdo->prepare("
@@ -38,8 +40,8 @@ class Testimoni
             $data['kategori_tokoh_id']
         ]);
     }
-
     // Update data testimoni
+        
     public function update($id, $data)
     {
         try {

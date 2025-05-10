@@ -99,10 +99,10 @@
                                         'nama' => $_POST['nama'],
                                     ];
                                     $kategori->update($_POST['id'], $data);
-                                    echo '<script>alert("Data berhasil diupdate")</script><meta http-equiv="refresh" content="0; url=?url=jenis">';
+                                    echo '<script>alert("Data berhasil diupdate")</script><meta http-equiv="refresh" content="0; url=?url=kategori">';
                                 } elseif ($_POST['type'] == 'delete') {
                                     $kategori->delete($_POST['id']);
-                                    echo '<script>alert("Data berhasil dihapus")</script><meta http-equiv="refresh" content="0; url=?url=jenis">';
+                                    echo '<script>alert("Data berhasil dihapus")</script><meta http-equiv="refresh" content="0; url=?url=kategori">';
                                 }
                             }
                             ?>
