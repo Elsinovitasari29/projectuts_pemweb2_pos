@@ -42,27 +42,33 @@ class Testimoni
     // Update data testimoni
     public function update($id, $data)
     {
-        $stmt = $this->pdo->prepare("
-            UPDATE testimoni 
-            SET 
-                tanggal = ?, 
-                nama_tokoh = ?, 
-                komentar = ?, 
-                rating = ?, 
-                produk_id = ?, 
-                kategori_tokoh_id = ? 
-            WHERE id = ?
-        ");
-        return $stmt->execute([
-            $data['tanggal'],
-            $data['nama_tokoh'],
-            $data['komentar'],
-            $data['rating'],
-            $data['produk_id'],
-            $data['kategori_tokoh_id'],
-            $id
-        ]);
+        try {
+            $stmt = $this->pdo->prepare("
+                UPDATE testimoni 
+                SET 
+                    tanggal = ?, 
+                    nama_tokoh = ?, 
+                    komentar = ?, 
+                    rating = ?, 
+                    produk_id = ?, 
+                    kategori_tokoh_id = ? 
+                WHERE id = ?
+            ");
+            return $stmt->execute([
+                $data['tanggal'],
+                $data['nama_tokoh'],
+                $data['komentar'],
+                $data['rating'],
+                $data['produk_id'],
+                $data['kategori_tokoh_id'],
+                $id
+            ]);
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
     }
+
 
     // Hapus data testimoni
     public function delete($id)

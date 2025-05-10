@@ -178,7 +178,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="?url=testimoni" class="nav-link">
+                    <a href="?url=test" class="nav-link">
                         <i class="nav-icon fas fa-quote-left"></i>
                         <p>
                             Testimoni
